@@ -1,181 +1,440 @@
-const grid = document.querySelector('.grid')
-const scoreDisplay = document.querySelector('#score')
-const blockWidth = 100
-const blockHeight = 20
-const ballDiameter = 20
-const boardWidth = 560
-const boardHeight = 300
-let xDirection = -2
-let yDirection = 2
+const canvas = document.getElementById("juego");
+const ctx = canvas.getContext("2d");
 
-const userStart = [230, 10]
-let currentPosition = userStart
+const puntosTexto = document.getElementById("puntos");
+const vidasTexto = document.getElementById("vidas");
 
-const ballStart = [270, 40]
-let ballCurrentPosition = ballStart
 
-let timerId
-let score = 0
+// ==============================
+// VARIABLES DEL JUEGO
+// ==============================
 
-//my block
-class Block {
-  constructor(xAxis, yAxis) {
-    this.bottomLeft = [xAxis, yAxis]
-    this.bottomRight = [xAxis + blockWidth, yAxis]
-    this.topRight = [xAxis + blockWidth, yAxis + blockHeight]
-    this.topLeft = [xAxis, yAxis + blockHeight]
-  }
-}
+let puntos = 0;
+let vidas = 3;
 
-//all my blocks
-const blocks = [
-  new Block(10, 270),
-  new Block(120, 270),
-  new Block(230, 270),
-  new Block(340, 270),
-  new Block(450, 270),
-  new Block(10, 240),
-  new Block(120, 240),
-  new Block(230, 240),
-  new Block(340, 240),
-  new Block(450, 240),
-  new Block(10, 210),
-  new Block(120, 210),
-  new Block(230, 210),
-  new Block(340, 210),
-  new Block(450, 210),
-]
+let izquierda = false;
+let derecha = false;
 
-//draw my blocks
-function addBlocks() {
-  for (let i = 0; i < blocks.length; i++) {
-    const block = document.createElement('div')
-    block.classList.add('block')
-    block.style.left = blocks[i].bottomLeft[0] + 'px'  
-    block.style.bottom = blocks[i].bottomLeft[1] + 'px'  
-    grid.appendChild(block)
-    console.log(blocks[i].bottomLeft)
-  }
-}
-addBlocks()
 
-//add user
-const user = document.createElement('div')
-user.classList.add('user')
-grid.appendChild(user)
-drawUser()
+// ==============================
+// PELOTA
+// ==============================
 
-//add ball
-const ball = document.createElement('div')
-ball.classList.add('ball')
-grid.appendChild(ball)
-drawBall()
+let pelota = {
+    x: 400,
+    y: 430,
+    radio: 10,
+    velocidadX: 4,
+    velocidadY: -4
+};
 
-//move user
-function moveUser(e) {
-  switch (e.key) {
-    case 'ArrowLeft':
-      if (currentPosition[0] > 0) {
-        currentPosition[0] -= 10
-        console.log(currentPosition[0] > 0)
-        drawUser()   
-      }
-      break
-    case 'ArrowRight':
-      if (currentPosition[0] < (boardWidth - blockWidth)) {
-        currentPosition[0] += 10
-        console.log(currentPosition[0])
-        drawUser()   
-      }
-      break
-  }
-}
-document.addEventListener('keydown', moveUser)
 
-//draw User
-function drawUser() {
-  user.style.left = currentPosition[0] + 'px'
-  user.style.bottom = currentPosition[1] + 'px'
-}
+// ==============================
+// PLATAFORMA
+// ==============================
 
-//draw Ball
-function drawBall() {
-  ball.style.left = ballCurrentPosition[0] + 'px'
-  ball.style.bottom = ballCurrentPosition[1] + 'px'
-}
+let plataforma = {
+    x: 350,
+    y: 465,
+    ancho: 100,
+    alto: 12,
+    velocidad: 7
+};
 
-//move ball
-function moveBall() {
-    ballCurrentPosition[0] += xDirection
-    ballCurrentPosition[1] += yDirection
-    drawBall()
-    checkForCollisions()
-}
-timerId = setInterval(moveBall, 30)
 
-//check for collisions
-function checkForCollisions() {
-  //check for block collision
-  for (let i = 0; i < blocks.length; i++){
-    if
-    (
-      (ballCurrentPosition[0] > blocks[i].bottomLeft[0] && ballCurrentPosition[0] < blocks[i].bottomRight[0]) &&
-      ((ballCurrentPosition[1] + ballDiameter) > blocks[i].bottomLeft[1] && ballCurrentPosition[1] < blocks[i].topLeft[1]) 
-    )
-      {
-      const allBlocks = Array.from(document.querySelectorAll('.block'))
-      allBlocks[i].classList.remove('block')
-      blocks.splice(i,1)
-      changeDirection()   
-      score++
-      scoreDisplay.innerHTML = score
-      if (blocks.length == 0) {
-        scoreDisplay.innerHTML = 'You Win!'
-        clearInterval(timerId)
-        document.removeEventListener('keydown', moveUser)
-      }
+// ==============================
+// BLOQUES
+// ==============================
+
+const filas = 5;
+const columnas = 8;
+
+const anchoBloque = 85;
+const altoBloque = 22;
+const separacion = 10;
+
+const inicioX = 30;
+const inicioY = 40;
+
+let bloques = [];
+
+
+// ==============================
+// CREAR BLOQUES
+// ==============================
+
+function crearBloques() {
+
+    for (let fila = 0; fila < filas; fila++) {
+
+        bloques[fila] = [];
+
+        for (let columna = 0; columna < columnas; columna++) {
+
+            bloques[fila][columna] = true;
+
+        }
     }
-  }
-  // check for wall hits
-  if (ballCurrentPosition[0] >= (boardWidth - ballDiameter) || ballCurrentPosition[0] <= 0 || ballCurrentPosition[1] >= (boardHeight - ballDiameter))
-  {
-    changeDirection()
-  }
-
-  //check for user collision
-  if
-  (
-    (ballCurrentPosition[0] > currentPosition[0] && ballCurrentPosition[0] < currentPosition[0] + blockWidth) &&
-    (ballCurrentPosition[1] > currentPosition[1] && ballCurrentPosition[1] < currentPosition[1] + blockHeight ) 
-  )
-  {
-    changeDirection()
-  }
-
-  //game over
-  if (ballCurrentPosition[1] <= 0) {
-    clearInterval(timerId)
-    scoreDisplay.innerHTML = 'You lose!'
-    document.removeEventListener('keydown', moveUser)
-  }
 }
 
 
-function changeDirection() {
-  if (xDirection === 2 && yDirection === 2) {
-    yDirection = -2
-    return
-  }
-  if (xDirection === 2 && yDirection === -2) {
-    xDirection = -2
-    return
-  }
-  if (xDirection === -2 && yDirection === -2) {
-    yDirection = 2
-    return
-  }
-  if (xDirection === -2 && yDirection === 2) {
-    xDirection = 2
-    return
-  }
+// ==============================
+// DIBUJAR PELOTA
+// ==============================
+
+function dibujarPelota() {
+
+    ctx.beginPath();
+
+    ctx.arc(
+        pelota.x,
+        pelota.y,
+        pelota.radio,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+
+    ctx.strokeStyle = "#f2c94c";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    ctx.closePath();
 }
+
+
+// ==============================
+// DIBUJAR PLATAFORMA
+// ==============================
+
+function dibujarPlataforma() {
+
+    ctx.fillStyle = "#f2c94c";
+
+    ctx.fillRect(
+        plataforma.x,
+        plataforma.y,
+        plataforma.ancho,
+        plataforma.alto
+    );
+}
+
+
+// ==============================
+// DIBUJAR BLOQUES
+// ==============================
+
+function dibujarBloques() {
+
+    const colores = [
+        "#f2c94c",
+        "#27ae60",
+        "#219653",
+        "#2d9cdb",
+        "#eb5757"
+    ];
+
+    for (let fila = 0; fila < filas; fila++) {
+
+        for (let columna = 0; columna < columnas; columna++) {
+
+            if (bloques[fila][columna] === true) {
+
+                const x =
+                    inicioX +
+                    columna * (anchoBloque + separacion);
+
+                const y =
+                    inicioY +
+                    fila * (altoBloque + separacion);
+
+                ctx.fillStyle = colores[fila];
+
+                ctx.fillRect(
+                    x,
+                    y,
+                    anchoBloque,
+                    altoBloque
+                );
+            }
+        }
+    }
+}
+
+
+// ==============================
+// MOVER PELOTA
+// ==============================
+
+function moverPelota() {
+
+    pelota.x += pelota.velocidadX;
+    pelota.y += pelota.velocidadY;
+
+
+    // Pared izquierda
+    if (pelota.x - pelota.radio <= 0) {
+
+        pelota.x = pelota.radio;
+
+        pelota.velocidadX *= -1;
+    }
+
+
+    // Pared derecha
+    if (pelota.x + pelota.radio >= canvas.width) {
+
+        pelota.x = canvas.width - pelota.radio;
+
+        pelota.velocidadX *= -1;
+    }
+
+
+    // Pared superior
+    if (pelota.y - pelota.radio <= 0) {
+
+        pelota.y = pelota.radio;
+
+        pelota.velocidadY *= -1;
+    }
+
+
+    // ==========================
+    // COLISIÓN CON PLATAFORMA
+    // ==========================
+
+    if (
+        pelota.y + pelota.radio >= plataforma.y &&
+        pelota.y - pelota.radio <= plataforma.y + plataforma.alto &&
+        pelota.x >= plataforma.x &&
+        pelota.x <= plataforma.x + plataforma.ancho &&
+        pelota.velocidadY > 0
+    ) {
+
+        pelota.y = plataforma.y - pelota.radio;
+
+        pelota.velocidadY *= -1;
+    }
+
+
+    // ==========================
+    // PELOTA CAE
+    // ==========================
+
+    if (pelota.y - pelota.radio > canvas.height) {
+
+        vidas--;
+
+        vidasTexto.textContent = vidas;
+
+        reiniciarPelota();
+
+
+        if (vidas <= 0) {
+
+            alert(
+                "GAME OVER\n\nPuntos obtenidos: " + puntos
+            );
+
+            location.reload();
+        }
+    }
+}
+
+
+// ==============================
+// REINICIAR PELOTA
+// ==============================
+
+function reiniciarPelota() {
+
+    pelota.x = 400;
+    pelota.y = 430;
+
+    pelota.velocidadX = 4;
+    pelota.velocidadY = -4;
+}
+
+
+// ==============================
+// MOVER PLATAFORMA
+// ==============================
+
+function moverPlataforma() {
+
+    if (izquierda) {
+
+        plataforma.x -= plataforma.velocidad;
+    }
+
+    if (derecha) {
+
+        plataforma.x += plataforma.velocidad;
+    }
+
+
+    // Evitar que salga por la izquierda
+
+    if (plataforma.x < 0) {
+
+        plataforma.x = 0;
+    }
+
+
+    // Evitar que salga por la derecha
+
+    if (
+        plataforma.x + plataforma.ancho >
+        canvas.width
+    ) {
+
+        plataforma.x =
+            canvas.width - plataforma.ancho;
+    }
+}
+
+
+// ==============================
+// REVISAR COLISIONES CON BLOQUES
+// ==============================
+
+function revisarBloques() {
+
+    for (let fila = 0; fila < filas; fila++) {
+
+        for (let columna = 0; columna < columnas; columna++) {
+
+            if (bloques[fila][columna] === false) {
+
+                continue;
+            }
+
+
+            const x =
+                inicioX +
+                columna * (anchoBloque + separacion);
+
+            const y =
+                inicioY +
+                fila * (altoBloque + separacion);
+
+
+            // Detectar choque con el bloque
+
+            if (
+                pelota.x + pelota.radio > x &&
+                pelota.x - pelota.radio < x + anchoBloque &&
+                pelota.y + pelota.radio > y &&
+                pelota.y - pelota.radio < y + altoBloque
+            ) {
+
+                bloques[fila][columna] = false;
+
+                pelota.velocidadY *= -1;
+
+                puntos += 10;
+
+                puntosTexto.textContent = puntos;
+            }
+        }
+    }
+}
+
+
+// ==============================
+// CONTROLES DEL TECLADO
+// ==============================
+
+document.addEventListener("keydown", function(event) {
+
+    if (event.key === "ArrowLeft") {
+
+        izquierda = true;
+    }
+
+    if (event.key === "ArrowRight") {
+
+        derecha = true;
+    }
+
+});
+
+
+document.addEventListener("keyup", function(event) {
+
+    if (event.key === "ArrowLeft") {
+
+        izquierda = false;
+    }
+
+    if (event.key === "ArrowRight") {
+
+        derecha = false;
+    }
+
+});
+
+
+// ==============================
+// DIBUJAR JUEGO
+// ==============================
+
+function dibujar() {
+
+    // Limpiar tablero
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    // Fondo negro
+
+    ctx.fillStyle = "#000000";
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    dibujarBloques();
+
+    dibujarPelota();
+
+    dibujarPlataforma();
+}
+
+
+// ==============================
+// BUCLE PRINCIPAL
+// ==============================
+
+function juego() {
+
+    moverPlataforma();
+
+    moverPelota();
+
+    revisarBloques();
+
+    dibujar();
+
+    requestAnimationFrame(juego);
+}
+
+
+// ==============================
+// INICIAR JUEGO
+// ==============================
+
+crearBloques();
+
+juego();

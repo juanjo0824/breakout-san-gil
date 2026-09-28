@@ -1,42 +1,52 @@
-
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Breakout San Gil</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="inicio">
 
-    <div class="juego">
+    <main class="portada">
 
-        <header>
-            <h1>🏞️ BREAKOUT SAN GIL</h1>
-            <p>Desafío Sangileño</p>
-        </header>
-
-        <div class="informacion">
-            <span>Puntos: <strong id="puntos">0</strong></span>
-            <span>Vidas: <strong id="vidas">3</strong></span>
+        <div class="logo">
+            🎮
         </div>
 
-        <canvas id="canvas" width="800" height="500"></canvas>
+        <p class="etiqueta">
+            MADE IN SAN GIL
+        </p>
 
-        <div class="controles">
-            <p>⬅️ ➡️ Usa las flechas del teclado para mover la plataforma</p>
+        <h1>
+            BREAKOUT<br>
+            <span>SAN GIL</span>
+        </h1>
+
+        <p class="descripcion">
+            Un desafío inspirado en la tierra de la aventura.
+        </p>
+
+        <a href="juego.html" class="boton">
+            JUGAR
+        </a>
+
+        <div class="info">
+            <span>🎯 Rompe los bloques</span>
+            <span>❤️ Conserva tus vidas</span>
+            <span>🏆 Consigue puntos</span>
         </div>
 
-        <div id="mensaje" class="mensaje">
-            <h2>¡Bienvenido a San Gil!</h2>
-            <p>Destruye todos los bloques y consigue la mayor puntuación.</p>
-            <button onclick="iniciarJuego()">JUGAR</button>
-        </div>
+        <p class="autor">
+            Versión 2 · Adaptación académica
+        </p>
 
-    </div>
-
-    <script src="script.js"></script>
+    </main>
 
 </body>
 </html>
+```

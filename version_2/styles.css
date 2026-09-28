@@ -6,171 +6,314 @@
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, sans-serif;
+}
+
+
+/* =========================
+   PÁGINA INICIAL
+========================= */
+
+.inicio {
     min-height: 100vh;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    background: linear-gradient(135deg, #0b3d2e, #176b45, #f2c94c);
-
     color: white;
-}
 
-.juego {
-    width: 900px;
-    max-width: 95%;
+    background:
+        radial-gradient(
+            circle at top,
+            #267653,
+            #09251b 70%
+        );
+
     text-align: center;
 }
 
-header {
-    margin-bottom: 15px;
-}
-
-header h1 {
-    font-size: 38px;
-    font-weight: bold;
-    letter-spacing: 2px;
-}
-
-header p {
-    margin-top: 8px;
-    font-size: 18px;
-}
-
-.informacion {
-    width: 800px;
-    max-width: 100%;
-    margin: 0 auto;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 12px 20px;
-
-    background: rgba(0, 0, 0, 0.45);
-
-    border-radius: 10px 10px 0 0;
-
-    font-size: 18px;
-    font-weight: bold;
-}
-
-#canvas {
-    display: block;
-
-    width: 800px;
-    max-width: 100%;
-    height: 500px;
-
-    margin: 0 auto;
-
-    background: #123b2a;
-
-    border: 4px solid #f2c94c;
-    border-top: none;
-
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-}
-
-.controles {
-    margin-top: 15px;
-
-    font-size: 15px;
-
-    background: rgba(0, 0, 0, 0.25);
-
-    padding: 10px;
-
-    border-radius: 8px;
-}
-
-.mensaje {
-    position: fixed;
-
-    top: 50%;
-    left: 50%;
-
-    transform: translate(-50%, -50%);
-
-    width: 420px;
+.portada {
+    width: 600px;
     max-width: 90%;
 
-    padding: 30px;
-
-    background: rgba(0, 0, 0, 0.95);
-
-    border: 3px solid #f2c94c;
-
-    border-radius: 15px;
-
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-
-    z-index: 10;
+    padding: 40px;
 }
 
-.mensaje h2 {
-    margin-bottom: 15px;
+.logo {
+    width: 90px;
+    height: 90px;
 
-    font-size: 28px;
-}
+    margin: auto;
+    margin-bottom: 20px;
 
-.mensaje p {
-    margin-bottom: 12px;
-
-    line-height: 1.5;
-}
-
-button {
-    margin-top: 10px;
-
-    padding: 12px 30px;
-
-    border: none;
-    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     background: #f2c94c;
 
-    color: #17251d;
+    border-radius: 50%;
 
-    font-size: 17px;
+    font-size: 45px;
+
+    box-shadow:
+        0 0 30px rgba(242, 201, 76, 0.4);
+}
+
+.etiqueta {
+    color: #f2c94c;
+
+    font-size: 14px;
     font-weight: bold;
 
-    cursor: pointer;
+    letter-spacing: 4px;
+
+    margin-bottom: 12px;
+}
+
+.portada h1 {
+    font-size: 65px;
+    line-height: 0.95;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 20px;
+}
+
+.portada h1 span {
+    color: #f2c94c;
+}
+
+.descripcion {
+    font-size: 18px;
+
+    color: #d8e8df;
+
+    margin-bottom: 35px;
+}
+
+
+/* BOTÓN */
+
+.boton {
+    display: inline-block;
+
+    padding: 16px 55px;
+
+    background: #f2c94c;
+
+    color: #123b2a;
+
+    text-decoration: none;
+
+    font-size: 21px;
+    font-weight: bold;
+
+    border-radius: 10px;
 
     transition: 0.2s;
 }
 
-button:hover {
-    transform: scale(1.05);
+.boton:hover {
+    background: #ffe082;
 
-    background: #ffd966;
+    transform: scale(1.06);
 }
 
-button:active {
-    transform: scale(0.98);
+
+/* INFORMACIÓN */
+
+.info {
+    margin-top: 40px;
+
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+    flex-wrap: wrap;
+
+    font-size: 14px;
+
+    color: #d8e8df;
 }
 
-/* Adaptación para pantallas pequeñas */
+.autor {
+    margin-top: 35px;
 
-@media (max-width: 850px) {
+    font-size: 12px;
 
-    .juego {
-        width: 95%;
+    color: #8eaaa0;
+}
+
+
+/* =========================
+   PÁGINA DEL JUEGO
+========================= */
+
+.pagina-juego {
+    min-height: 100vh;
+
+    padding: 25px 10px;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #267653,
+            #071b14 75%
+        );
+
+    color: white;
+}
+
+.juego-contenedor {
+    width: 820px;
+    max-width: 100%;
+
+    margin: auto;
+
+    text-align: center;
+}
+
+
+/* CABECERA */
+
+.cabecera-juego {
+    position: relative;
+
+    margin-bottom: 20px;
+}
+
+.cabecera-juego h1 {
+    color: #f2c94c;
+
+    font-size: 32px;
+
+    letter-spacing: 2px;
+}
+
+.cabecera-juego p {
+    color: #c5d8cf;
+
+    margin-top: 5px;
+}
+
+
+/* BOTÓN VOLVER */
+
+.volver {
+    position: absolute;
+
+    left: 0;
+    top: 10px;
+
+    color: white;
+
+    text-decoration: none;
+
+    background: #123b2a;
+
+    border: 1px solid #f2c94c;
+
+    padding: 8px 14px;
+
+    border-radius: 7px;
+}
+
+.volver:hover {
+    background: #1c563d;
+}
+
+
+/* MARCADOR */
+
+.marcador {
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 14px 25px;
+
+    background: #123b2a;
+
+    border: 2px solid #f2c94c;
+
+    border-radius: 10px 10px 0 0;
+
+    font-size: 16px;
+}
+
+.marcador strong {
+    color: #f2c94c;
+
+    margin-left: 8px;
+
+    font-size: 20px;
+}
+
+
+/* =========================
+   TABLERO NEGRO
+========================= */
+
+.zona-juego {
+    padding: 10px;
+
+    background: #000000;
+
+    border-left: 2px solid #f2c94c;
+    border-right: 2px solid #f2c94c;
+    border-bottom: 2px solid #f2c94c;
+}
+
+#juego {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    background: #000000;
+
+    border-radius: 5px;
+}
+
+
+/* CONTROLES */
+
+.controles {
+    margin-top: 18px;
+
+    color: #b8cec4;
+
+    line-height: 1.7;
+}
+
+.controles strong {
+    color: #f2c94c;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+
+    .portada h1 {
+        font-size: 45px;
     }
 
-    header h1 {
-        font-size: 28px;
+    .cabecera-juego h1 {
+        font-size: 24px;
     }
 
-    #canvas {
-        height: auto;
+    .volver {
+        position: static;
+
+        display: inline-block;
+
+        margin-bottom: 12px;
     }
 
-    .informacion {
-        font-size: 16px;
-    }
 }
 ```

@@ -1,0 +1,78 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Juego - Breakout San Gil</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="pagina-juego">
+
+    <div class="juego-contenedor">
+
+        <header class="cabecera-juego">
+
+            <a href="index.html" class="volver">
+                ← Inicio
+            </a>
+
+            <div>
+                <h1>BREAKOUT SAN GIL</h1>
+                <p>Desafío Sangileño</p>
+            </div>
+
+        </header>
+
+
+        <div class="marcador">
+
+            <div>
+                🎯 PUNTOS
+                <strong id="puntos">0</strong>
+            </div>
+
+            <div>
+                ❤️ VIDAS
+                <strong id="vidas">3</strong>
+            </div>
+
+        </div>
+
+
+        <div class="zona-juego">
+
+            <canvas
+                id="juego"
+                width="800"
+                height="500">
+            </canvas>
+
+        </div>
+
+
+        <div class="controles">
+
+            <p>
+                ⬅️ <strong>Flecha izquierda</strong>
+                &nbsp;&nbsp;&nbsp;
+                <strong>Flecha derecha</strong> ➡️
+            </p>
+
+            <p>
+                Mueve la plataforma y evita que la pelota caiga.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <script src="index.js"></script>
+
+</body>
+</html>
+```
